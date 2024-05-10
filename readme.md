@@ -1,7 +1,26 @@
-On This Erp There So Many Module WHich Are Given Below:
-Inventory: The Inventory module manages the stock levels of all products or items within the organization. It tracks quantities on hand, incoming shipments, outgoing orders, and locations within warehouses. It also often includes functionalities for stock valuation, serial number tracking, batch management, and inventory optimization.
-Customer And Supplier: This module manages information related to customers and suppliers. It includes features for storing contact details, communication history, transaction records, credit limits, and payment terms. It facilitates efficient communication and relationship management with both customers and suppliers.
-Purchases: The Purchases module handles the procurement process, from requisitioning to receiving goods from suppliers. It includes functionalities for creating purchase orders, requesting quotes, vendor selection, purchase approvals, receipt of goods, and invoice reconciliation. It ensures smooth and timely procurement of materials and services.
-Sales: The Sales module focuses on managing the sales process, from lead generation to order fulfillment. It includes features for lead management, opportunity tracking, quote generation, order processing, invoicing, and sales forecasting. It enables sales teams to effectively manage customer relationships and drive revenue growth.
-Reports: The Reports module provides tools for generating and analyzing various reports related to different aspects of the business. This may include financial reports, sales reports, inventory reports, purchasing reports, and performance dashboards. It helps stakeholders gain insights into key metrics and make data-driven decisions.
-Transporter: The Transporter module manages transportation logistics for the organization's goods. It includes functionalities for scheduling pickups, tracking shipments, managing carriers, calculating freight costs, and generating shipping documentation. It ensures efficient and timely delivery of goods to customers or warehouses.
+ECP Market - React Native Ecommerce Application
+Welcome to ECP Market, your go-to destination for all your online shopping needs! Our React Native Ecommerce Application offers a seamless and intuitive shopping experience, allowing users to browse, search, and purchase a wide range of products from the comfort of their mobile devices. Whether you're shopping for electronics, fashion, home essentials, or groceries, ECP Market has you covered with a vast selection of high-quality products from trusted sellers.
+
+Key Features:
+User-Friendly Interface:
+Enjoy a sleek and user-friendly interface designed for optimal navigation and ease of use, providing a seamless shopping experience for users of all skill levels.
+
+Product Catalog:
+Explore a comprehensive catalog of products across various categories, including electronics, fashion, beauty, home goods, and more, with detailed product descriptions and high-resolution images.
+Search and Filters:
+Easily find products using intuitive search functionality and advanced filtering options, allowing users to refine their search results based on criteria such as price, brand, size, color, and more.
+
+Secure Checkout:
+Shop with confidence using our secure checkout process, which supports multiple payment methods and ensures the privacy and security of users' personal and financial information.
+
+Order Tracking:
+Keep track of your orders in real-time with built-in order tracking features, allowing users to monitor the status of their shipments and receive timely updates on delivery progress.
+
+Wishlist and Favorites:
+Save your favorite products to your wishlist for future reference, and easily access them whenever you're ready to make a purchase.
+
+Reviews and Ratings:
+Make informed purchasing decisions with user-generated reviews and ratings for products, providing valuable insights and feedback from fellow shoppers.
+
+Notifications:
+Stay informed about new arrivals, exclusive offers, and order updates with push notifications, keeping you up-to-date with the latest developments on ECP Market.
