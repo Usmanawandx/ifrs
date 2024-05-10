@@ -1,0 +1,817 @@
+﻿
+@model LMS.Models.FileModel
+
+
+@{
+    ViewBag.Title = "Home";
+}
+
+
+<div class="container body-content">
+
+    <input type="hidden" id="mainfile" name="mainfile" value="" />
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+        <div class="h-100 brd">
+            <div class="row bs-wizard">
+                <div class="col bs-wizard-step active" id="GD">
+                    <div class="text-center bs-wizard-stepnum"><strong>General Details</strong></div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <a href="javascript:void(0)" class="bs-wizard-dot"></a>
+                </div>
+                <div class="col bs-wizard-step de" id="STAGING">
+                    <div class="text-center bs-wizard-stepnum">Staging</div>
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <a href="javascript:void(0)" class="bs-wizard-dot"></a>
+                </div>
+
+                <div class="col bs-wizard-step de" id="LGD">
+                    <div class="text-center bs-wizard-stepnum">LGD</div>
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <a href="javascript:void(0)" class="bs-wizard-dot"></a>
+                </div>
+                <div class="col bs-wizard-step de" id="PD">
+                    <div class="text-center bs-wizard-stepnum">PD</div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <a href="javascript:void(0)" class="bs-wizard-dot"></a>
+                </div>
+                <div class="col bs-wizard-step de" id="REVIEW">
+                    <div class="text-center bs-wizard-stepnum">Review</div>
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <a href="javascript:void(0)" class="bs-wizard-dot"></a>
+                </div>
+                <div class="col bs-wizard-step de" id="ECL">
+                    <div class="text-center bs-wizard-stepnum">ECL Dashboard</div>
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <a href="javascript:void(0)" class="bs-wizard-dot"></a>
+                </div>
+            </div>
+
+            <div id="subpage-container">
+                <script type="text/javascript">
+                    toastr["warning"]("PDs for Corporate and Retail are captured with General Details and the Modules have been marked as not required.");
+                </script>
+
+
+                <div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"> <a class="nav-link active" id="main-heading" href="#corporate" role="tab" data-toggle="tab">General Details</a> </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="row">
+                            <div class="col-md-6" id="file-upload-section">
+                                <p>Upload data</p>
+                                <a href="/Home/Download?filepath=~/Content/Templates/GeneralTemplate/General_Details.xlsx&amp;&amp;fileName=General_Details.xlsx" target="_self" class="download" style="top:0; right:140px;"><i class="fa fa-download"></i> Download Template</a>
+                                <form id="frmGeneralUpload" enctype="multipart/form-data" method="post">
+                                    <span class="filename" id="GDfilename">Select your file</span>
+                                    <label for="file-upload" id="GDUploadBtn">
+                                        Browse
+                                    </label>
+                                    <input type="file" class="file-upload" name="fileName" accept=".xlsx" id="GDUploadedFile">
+                                    <button class="btn btn-primary upload" id="GDUploadBtn" type="button">Upload</button>
+                                    <div id="progressBar"></div>
+                                    <div id="result"></div><br />
+                                    <label id="lbldisp"></label>
+                                    <label id="lblStatus"></label>
+
+                                    <table width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td width="55%">
+                                                    <div class="progress CustomProgress">
+                                                        <div id="GDFileProgress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                                            <span></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="pull-left" id="GDProgressSpan"><strong>0%</strong> </span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="col-md-12" id="data-section" style="display:none">
+                                <div class="row">
+                                    <div class="col-12 p-3 form-inline float-md-right">
+                                        <input type="number" max="100" min="0" class="form-control  col-3" placeholder="Base ECL %" id="base" />
+                                        <input type="number" max="100" min="0" class="form-control ml-2 col-3" placeholder="Best ECL %" id="best" />
+                                        <input type="number" max="100" min="0" class="form-control ml-2 col-3" placeholder="Worst ECL %" id="worst" />
+                                        <input type="button" class="btn btn-sm btn-primary ml-2 col-2" value="Check" id="btnPercent %" />
+
+
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered" id="front-table-data">
+                                    <thead>
+                                        <tr>
+                                            <th>Stages</th>
+                                            <th>EAD</th>
+                                            <th>IFRS9 Base ECL</th>
+                                            <th>IFRS9 Best ECL</th>
+                                            <th>IFRS9 Worst ECL</th>
+                                            <th>Weighted Average ECL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="font-weight-bold">
+                                            <td>Total</td>
+                                            <td id="ead"></td>
+                                            <td id="baseEad"></td>
+                                            <td id="bestEad"></td>
+                                            <td id="WorstEad"></td>
+                                            <td id="WeightedECL"></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <a style="float:right" target="_blank" class="btn btn-primary btn-sm" href="~/Home/Search">Search By Facility ID</a>
+
+
+
+
+                            </div>
+
+
+                            <div class="col-md-6" id="gdValidationBlock" style="display:none;">
+                                <p>Validation Failed</p>
+                                <div class="card text-center">
+                                    <div class="card-block">
+                                        <p class="card-text">Error(s) Found</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button id="btnError" class=" btn btn-primary" style="color:white">
+                                            <img src="/Content/images/file.png">
+                                            Detailed Error Log
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Required Modules If -->
+                    <div class="row" id="skipModule" style="display:none;">
+                        <div style="display:none" class="col-lg-7 modules">
+                            <label>Modules Required : </label>
+                            <input type="checkbox" name="rbdModules" id="Portfolio_Corporate_PD">PD Corporate
+                            <input type="checkbox" name="rbdModules" id="Portfolio_Retail_PD">PD Retail
+                            <input type="checkbox" name="rbdModules" id="Portfolio_SME_PD">PD SME
+                            <input type="checkbox" name="rbdModules" id="Unsecured_LGD">LGD
+                            <input type="checkbox" name="rbdModules" id="Stage">Staging
+                            <input id="GDFileName" name="FileName" type="hidden" value="">
+                        </div>
+                    </div>
+                    <div id="data-second" class="col-md-12 " style="display:none; ">
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+                                <div class="input-group mb-3">
+                                    <select class="custom-select col-3" name="prtdropdown" onchange="portolioChange(value)" id="portfolioDropdown">
+                                        <option selected>Choose...</option>
+                                        @*<option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>*@
+                                    </select>
+                                    <div class="input-group-append">
+                                        <label class="input-group-text" for="portfolioDropdown">GET</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered" id="front-table-portfolio">
+                            <thead>
+                                <tr>
+                                    <th id="prtfl">Stages</th>
+                                    <th>Principle + Markup</th>
+                                    <th>Percentage</th>
+                                    <th>EAD</th>
+                                    <th>WAV ECL</th>
+                                    <th>Percentage OF ECL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot class="">
+                                <tr class="font-weight-bold">
+                                    <td>Total </td>
+                                    <td id="totalDrawn"> </td>
+                                    <td></td>
+                                    <td id="totalEAD"></td>
+                                    <td id="totalECL"> </td>
+                                    <td id="totalECLPercent">  </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row" style="display:none;" id="gdControlBlock">
+                        <div class="col text-center">
+                            <button class="btn btn-primary validate" type="button" id="btnECLCalculator">Comprehensive ECL Report</button>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 text-center">
+                                    <a class="btn btn-primary validate" target="_blank" type="button" href=" @Url.Action( "Index", "Report")">Advances Breakup</a>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <a class="btn btn-primary validate" target="_blank" href=" @Url.Action( "Investment", "Report")" type="button" id="">Investment Breakup</a>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <a class="btn btn-primary validate" target="_blank" href=" @Url.Action( "Acceptances", "Report")" type="button" id="">Acceptance Breakup</a>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <a class="btn btn-primary validate" target="_blank" href=" @Url.Action( "Non_funded", "Report")" type="button" id="">Non Funded Breakup</a>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+                <div class="modal fade" id="errModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                The total sum of best,base and worst must be equal to 100
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="~/Scripts/jquery.signalR-2.1.2.js"></script>
+                <script src="~/signalr/hubs"></script>
+                <script type="text/javascript">
+                    var portIFRSbase = []
+                    var portIFRSbest = []
+                    var portIFRSwrost = []
+                    var totaldrawn = 0;
+                    var bse = 60;
+                    var bst = 5;
+                    var wrs = 35;
+                    var drawn = [];
+                    //on Portfilio Change 
+                    function portolioChange(value) {
+                        console.log(value);
+                        var trsec = "";
+                        totaldrawn = 0;
+                        var totalEAD = 0;
+
+                        portIFRSbase = []
+                        portIFRSbest = []
+                        portIFRSwrost = []
+                        var totalWAV = 0
+                        drawn = [];
+                        var EAD = [];
+                        var ECL = []
+                        var stage = []
+                        $.ajax({
+                            url: '/Home/portdata',
+                            type: 'post',
+                            dataType: "json",
+                            data: { val: value },
+                            success: function (res) {
+                                $(res.result_two).each(function (i, e) {
+                                    $('#prtfl').html(e.Portfolio)
+                                    totaldrawn += e.startingExp;
+                                    totalEAD += e.EAD;
+                                    totalWAV += ((e.IFRSNumberBase * bse / 100) + (e.IFRSNumberBest * bst / 100) + (e.IFRSNumberWorst * wrs / 100))
+                                    drawn.push(e.startingExp);
+                                    EAD.push(e.EAD);
+                                    ECL.push((e.IFRSNumberBase * 0.6) + (e.IFRSNumberBest * 0.05) + (e.IFRSNumberWorst * 0.35));
+                                    stage.push(e.Stage)
+                                    portIFRSbase.push(e.IFRSNumberBase)
+                                    portIFRSbest.push(e.IFRSNumberBest)
+                                    portIFRSwrost.push(e.IFRSNumberWorst)
+                                });
+                                for (var i = 0; i < stage.length; i++) {
+                                    trsec += "<tr>";
+                                    trsec += "<td>Stage " + stage[i] + "</td>";
+                                    trsec += "<td>" + numberWithCommas(drawn[i].toFixed(2)) + "</td>";
+                                    trsec += "<td>" + numberWithCommas(((drawn[i] / totaldrawn) * 100).toFixed(2)) + "% </td>";
+                                    trsec += "<td>" + numberWithCommas(EAD[i].toFixed(2)) + "</td>";
+                                    trsec += "<td id='port" + i + "'>" + numberWithCommas(ECL[i].toFixed(2)) + "</td>";
+                                    trsec += "<td id='perc" + i + "'>" + numberWithCommas(((ECL[i] / drawn[i]) * 100).toFixed(2)) + "%</td>";
+                                    $('#totalDrawn').html(numberWithCommas(totaldrawn.toFixed(2)));
+                                    $('#totalEAD').html(numberWithCommas(totalEAD.toFixed(2)));
+                                    $('#totalECL').html(numberWithCommas(totalWAV.toFixed(2)));
+                                    $('#totalECLPercent').html(((totalWAV / totaldrawn) * 100).toFixed(2) + '%');
+                                    trsec += "</tr>";
+                                }
+                                $("#front-table-portfolio tbody").html(trsec);
+                                //$("#front-table-portfolio").DataTable({
+                                //    dom: 'Bfrtip',
+                                //    buttons: [
+                                //        'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+                                //    ],
+                                //    "order": [[3, "desc"]]
+                                //});
+                            }
+                        })
+                    }
+
+                    var best = [];
+                    var base = [];
+                    var worst = [];
+                    // change of ECL Weightages
+                    $("#btnPercent").on('click', function () {
+                        var total_wav = 0;
+                        var total_wav2 = 0;
+                        for (var i = 0; i < worst.length; i++) {
+                            bse = $('#base').val();
+                            bst = $('#best').val();
+                            wrs = $('#worst').val();
+                            var t = parseInt(bse) + parseInt(bst) + parseInt(wrs);
+                            if (t != 100) {
+                                $("#errModal").modal('show');
+                                return;
+                            }
+                            total_wav = total_wav + ((best[i] * (bst / 100)) + (base[i] * (bse / 100)) + (worst[i] * (wrs / 100)))
+                            var val = numberWithCommas(((best[i] * (bst / 100)) + (base[i] * (bse / 100)) + (worst[i] * (wrs / 100))).toFixed(2));
+                            if (i == 0) {
+                                $('#wr0').html(val);
+                            } else if (i == 1) {
+                                $('#wr1').html(val);
+                            } else if (i == 2) {
+                                $('#wr2').html(val);
+                            }
+                            else if (i == 3) {
+                                $('#wr3').html(val);
+                            }
+                        }
+                        for (var i = 0; i < portIFRSbest.length; i++) {
+                            total_wav2 = total_wav2 + ((portIFRSbest[i] * (bst / 100)) + (portIFRSbase[i] * (bse / 100)) + (portIFRSwrost[i] * (wrs / 100)));
+
+                            var val2 = numberWithCommas(((portIFRSbest[i] * (bst / 100)) + (portIFRSbase[i] * (bse / 100)) + (portIFRSwrost[i] * (wrs / 100))).toFixed(2));
+                            var dran = drawn[i];
+                            var val3 = (((portIFRSbest[i] * (bst / 100)) + (portIFRSbase[i] * (bse / 100)) + (portIFRSwrost[i] * (wrs / 100))) / dran * 100).toFixed(2);
+                            if (i == 0) {
+                                $('#port0').html(val2);
+                                $('#perc0').html(val3 + "%");
+                            } else if (i == 1) {
+                                $('#port1').html(val2);
+                                $('#perc1').html(val3 + "%");
+                            } else if (i == 2) {
+                                $('#port2').html(val2);
+                                $('#perc2').html(val3 + "%");
+                            }
+                            else if (i == 3) {
+                                $('#port3').html(val2);
+                                $('#perc4').html(val3 + "%");
+                            }
+                        }
+                        $('#totalECL').html(numberWithCommas(total_wav2.toFixed(2)));
+                        $('#WeightedECL').html(numberWithCommas(total_wav.toFixed(2)));
+                        $('#totalECLPercent').html(((total_wav2 / totaldrawn) * 100).toFixed(2) + '%');
+                        //$("#front-table-portfolio").DataTable({
+                        //    dom: 'Bfrtip',
+                        //    buttons: [
+                        //        { extend: 'copyHtml5', footer: true },
+                        //        { extend: 'excelHtml5', footer: true },
+                        //        { extend: 'csvHtml5', footer: true },
+                        //        { extend: 'pdfHtml5', footer: true }
+                        //    ],
+                        //    "order": [[3, "desc"]],
+                        //    footer: true,
+                        //});
+                    })
+                    $(document).ready(function () {
+
+                        // Get Comprehensive File
+                        $('#btnECLCalculator').click(function () {
+                            if ($('#Portfolio_Retail_PD').is(':checked')) {
+                                load_lgd_view("/PD");
+                            } else if ($('#Portfolio_Corporate_PD').is(':checked')) {
+                                load_lgd_view("/PD/PD_Corporate");
+                            }
+                            else {
+                                window.location.href = '/Home/ExportDataTableToExcel';
+                            }
+                        })
+                        // Get Error File
+                        $('#btnError').click(function () {
+
+                            window.location.href = '/Home/ExportErrors';
+
+                        })
+                        if ($(".bs-wizard-step").hasClass("complete")) { $(".bs-wizard-step").removeClass("complete") }
+                        if ($(".bs-wizard-step").hasClass("active")) { $(".bs-wizard-step").removeClass("active") }
+                        $(".bs-wizard-step").addClass("de");
+                        $("#GD").removeClass("de").addClass("active");
+                        $("#GDUploadBtn").on("click", function () {
+                            $("#GDUploadedFile").trigger("click");
+                        })
+                        Init_UploadGD()
+                        $('#btnGeneralDetails').on('click', function () {
+                            var GDUrl = '/Home/SaveGeneralDetails';
+                            var modArr = [];
+                            $("input[name='rbdModules']").each(function (indx, item) {
+                                modArr.push($(item).is(":checked"));
+                            })
+                            if ($("#GDFileName").val() == "") {
+                                toastr.error('Please upload input file.');
+                                return false;
+                            }
+                            var model = {
+                                FileName: $("#GDFileName").val(),
+                                Modules: modArr
+                            };
+                            ShowLoader();
+                            $.ajax({
+                                url: GDUrl,
+                                type: "POST",
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(model),
+                                success: function (result) {
+                                    HideLoader();
+                                    if (result.statusCode == "200") {
+                                        toastr.success(result.message);
+                                        document.getElementById(result.nextmodule).click();
+                                    }
+                                    else {
+                                        toastr.error(result.message);
+                                    }
+                                },
+                                error: function (xhr, errorThrown, textStatus) {
+                                    HideLoader();
+                                    toastr.error("There was an error occured. (" + thrownError + ")");
+                                }
+                            })
+
+                            return false;
+                        });
+                    })
+                    function numberWithCommas(x) {
+                        if (x != null) {
+                            return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
+                        }
+                        else {
+                            return x;
+                        }
+                    }
+                    //file Uploading
+                    function Init_UploadGD() {
+                        $('#frmGeneralUpload input[name=fileName]').change(function (evt) { singleFileSelectedGD(evt); });
+                        $('#frmGeneralUpload button[id=GDUploadBtn]').click(function () {
+                            $("#gdValidationBlock").css("display", "none");
+                            UploadFileGD();
+                        });
+                    }
+
+                    function singleFileSelectedGD(evt) {
+                        var selectedFile = ($("#GDUploadedFile"))[0].files[0];
+                        if (selectedFile) {
+                            var FileSize = 0;
+                            if (selectedFile.size > 1048576) {
+                                FileSize = Math.round(selectedFile.size * 100 / 1048576) / 100 + " MB";
+                            }
+                            else if (selectedFile.size > 1024) {
+                                FileSize = Math.round(selectedFile.size * 100 / 1024) / 100 + " KB";
+                            }
+                            else {
+                                FileSize = selectedFile.size + " Bytes";
+                            }
+                            $("#GDfilename").text("Name : " + selectedFile.name + " (" + FileSize + ")");
+                        }
+                    }
+                    var intervalID;
+                    function UploadFileGD() {
+                        var reqUrl = '/Home/Upload';
+                        var form = $('#frmGeneralUpload')[0];
+                        var dataString = new FormData(form);
+                        dataString.append("Type", "GD");
+                        StartInvoicing();;
+                        ShowLoader();
+                        $.ajax({
+                            url: reqUrl,
+                            type: 'POST',
+                            xhr: function () {
+                                var myXhr = $.ajaxSettings.xhr();
+                                if (myXhr.upload) { // Check if upload property exists
+                                    myXhr.upload.addEventListener('progress', progressHandlingFunctionGD, false); // For handling the progress of the upload
+                                }
+                                return myXhr;
+                            },
+                            //Ajax events
+                            success: successHandlerGD,
+                            error: errorHandlerGD,
+                            complete: completeHandlerGD,
+                            // Form data
+                            data: dataString,
+                            //Options to tell jQuery not to process data or worry about content-type.
+                            cache: false,
+                            contentType: false,
+                            processData: false
+                        });
+                    }
+                    function progressHandlingFunctionGD(e) {
+                        if (e.lengthComputable) {
+                            var percentComplete = Math.round(e.loaded * 100 / e.total);
+                            $("#GDFileProgress").css("width", percentComplete + '%').attr('aria-valuenow', percentComplete);
+                            $('#GDProgressSpan').text(percentComplete + "%");
+                        }
+                        else {
+                            $('#GDProgressSpan').text('unable to compute');
+                        }
+                    }
+                    function completeHandlerGD() {
+                        $("#GDFileProgress").css("width", '0%').attr('aria-valuenow', '0');
+                        $('#GDProgressSpan').text("0%");
+                    }
+                    function successHandlerGD(data) {
+                        var total_EAD = 0;
+                        var total_Base = 0;
+                        var total_Best = 0;
+                        var total_Worst = 0;
+                        var total_Wav = 0;
+                        HideLoader();
+                        if (data.statusCode == 200) {
+                            $("#front-table-data tbody").html(tr);
+                            $("#GDFileName").val(data.file);
+                            if (data.isValidFile == "true") {
+                                var tr = "";
+                                $(data.staging_data.Data.result_data).each(function (i, e) {
+                                    tr += "<tr>";
+                                    tr += "<td>Stage " + e.Stage + "</td>";
+                                    base.push(e.IFRSNumberBase);
+                                    best.push(e.IFRSNumberBest);
+                                    worst.push(e.IFRSNumberWorst);
+                                    total_EAD += e.EAD;
+                                    total_Base += e.IFRSNumberBase;
+                                    total_Best += e.IFRSNumberBest;
+                                    total_Worst += e.IFRSNumberWorst;
+                                    total_Wav = total_Wav + ((base[i] * 0.6) + (best[i] * 0.05) + (worst[i] * 0.35));
+                                    tr += "<td>" + numberWithCommas(e.EAD.toFixed(2)) + "</td>";
+                                    tr += "<td>" + numberWithCommas(e.IFRSNumberBase.toFixed(2)) + "</td>";
+                                    tr += "<td>" + numberWithCommas(e.IFRSNumberBest.toFixed(2)) + "</td>";
+                                    tr += "<td>" + numberWithCommas(e.IFRSNumberWorst.toFixed(2)) + "</td>";
+                                    tr += "<td id='wr" + i + "'>" + numberWithCommas(((base[i] * 0.6) + (best[i] * 0.05) + (worst[i] * 0.35)).toFixed(2)) + "</td>";
+                                    tr += "</tr>";
+                                });
+                                $('#ead').html(numberWithCommas(total_EAD.toFixed(2)))
+                                $('#baseEad').html(numberWithCommas(total_Base.toFixed(2)))
+                                $('#bestEad').html(numberWithCommas(total_Best.toFixed(2)))
+                                $('#WorstEad').html(numberWithCommas(total_Worst.toFixed(2)))
+                                $('#WeightedECL').html(numberWithCommas(total_Wav.toFixed(2)))
+                                var trsec = "";
+                                totaldrawn = 0;
+                                var totalEAD = 0;
+                                var totalWAV = 0;
+                                drawn = [];
+                                var EAD = [];
+                                var ECL = []
+                                var stage = []
+
+                                $(data.staging_data.Data.result_two).each(function (i, e) {
+                                    $('#prtfl').html(e.Portfolio)
+                                    totaldrawn += e.startingExp;
+                                    totalEAD += e.EAD;
+                                    totalWAV += ((e.IFRSNumberBase * 0.6) + (e.IFRSNumberBest * 0.05) + (e.IFRSNumberWorst * 0.35))
+                                    drawn.push(e.startingExp);
+                                    EAD.push(e.EAD);
+                                    ECL.push((e.IFRSNumberBase * 0.6) + (e.IFRSNumberBest * 0.05) + (e.IFRSNumberWorst * 0.35));
+                                    stage.push(e.Stage)
+                                    portIFRSbase.push(e.IFRSNumberBase)
+                                    portIFRSbest.push(e.IFRSNumberBest)
+                                    portIFRSwrost.push(e.IFRSNumberWorst)
+                                });
+                                $(data.staging_data.Data.result_portfolio).each(function (i, e) {
+                                    $("#portfolioDropdown").append("<option value'" + e + "' >" + e + "</option>")
+                                })
+                                for (var i = 0; i < stage.length; i++) {
+                                    trsec += "<tr>";
+                                    trsec += "<td>Stage " + stage[i] + "</td>";
+                                    trsec += "<td>" + numberWithCommas(drawn[i].toFixed(2)) + "</td>";
+                                    trsec += "<td>" + numberWithCommas(((drawn[i] / totaldrawn) * 100).toFixed(2)) + "% </td>";
+                                    trsec += "<td>" + numberWithCommas(EAD[i]) + "</td>";
+                                    //trsec += "<td>" + numberWithCommas(EAD[i].toFixed(2)) + "</td>";
+                                    trsec += "<td id='port" + i + "'>" + numberWithCommas(ECL[i].toFixed(2)) + "</td>";
+                                    trsec += "<td id='perc" + i + "'>" + numberWithCommas(((ECL[i] / drawn[i]) * 100).toFixed(2)) + "%</td>";
+                                    $('#totalDrawn').html(numberWithCommas(totaldrawn));
+                                    $('#totalEAD').html(numberWithCommas(totalEAD.toFixed(2)));
+                                    $('#totalECL').html(numberWithCommas(totalWAV.toFixed(2)));
+                                    $('#totalECLPercent').html(((totalWAV / totaldrawn) * 100).toFixed(2) + '%');
+                                    trsec += "</tr>";
+                                }
+                                $("#front-table-data tbody").html(tr);
+                                $("#front-table-portfolio tbody").html(trsec);
+
+                                toastr.success('File has been uploaded and validation successfully completed.');
+                                $("#gdControlBlock").css("display", "block");
+                                $("#gdValidationBlock").css("display", "none");
+                                $("#skipModule").css("display", "block");
+                                $("#data-second").show();
+                                $(".bs-wizard-step").addClass("complete");
+                                $(".bs-wizard-step").removeClass("de");
+                                $(".bs-wizard-step").removeClass("active");
+                                $("#file-upload-section").hide();
+                                $("#data-section").show();
+                                $("#main-heading").html("Summary");
+                                $("#front-table-data").html();
+                                if (data.flag != null) {
+                                    $("input[name='rbdModules']").each(function (indx, item) {
+                                        $.each(data.flag, function (arrKey, arrVal) {
+                                            if (arrKey == $(item).attr("id")) {
+                                                $(item).prop("checked", (arrVal > 0))
+                                                if ($(item).is(":checked")) {
+                                                    $(item).prop('disabled', true);
+                                                }
+                                            }
+                                        });
+                                    })
+                                }
+                                $("#front-table-portfolio").DataTable({
+                                    dom: 'Bfrtip',
+                                    buttons: [
+                                        { extend: 'copyHtml5', footer: true },
+                                        { extend: 'excelHtml5', footer: true },
+                                        { extend: 'csvHtml5', footer: true },
+                                        { extend: 'pdfHtml5', footer: true }
+                                    ],
+                                    "order": [[0, "asc"]],
+                                    footer: true,
+                                });
+                            }
+                            else {
+                                if (data.validationStatus == "true" && data.LGDREquired == "false") {
+                                    toastr.warning('File has been uploaded but errors were found during validation. Please check the error log for details.');
+                                    $("#gdValidationBlock").css("display", "block");
+                                    $("#gdValidationBlock .card-title").text(data.errorCount);
+                                    $("#skipModule").css("display", "none");
+                                    $("#gdControlBlock").css("display", "none");
+                                } else if (data.validationStatus == "true" && data.LGDREquired == "true") {
+                                    load_lgd_view("/LGD");
+                                }
+                                else if (data.validationStatus == "true" && data.PDRequired == "true") {
+                                    load_pd_view("/PD", data.flag);
+                                    if (data.flag == "Rated") {
+
+                                        $('#pills-retail').css("display", "none");
+                                    }
+                                    else if (data.flag == "nonRated") {
+                                        $('#pills-profile-tab').css("display", "none");
+                                    }
+                                }
+                                else {
+                                    toastr.warning(data.validationMessage);
+                                }
+                            }
+                        }
+                        else {
+                            toastr.error('Error:' + data.status);
+                        }
+                    }
+                    function errorHandlerGD(xhr, ajaxOptions, thrownError) {
+                        HideLoader();
+                        toastr.error('There was an error attempting to upload the file. Please try again later.' + '(' + thrownError + ')')
+                    }
+
+                </script>
+            </div>
+
+        </div>
+    </main>
+    <script type="text/javascript">
+        // Load LGD View 
+        function load_lgd_view(url) {
+            $.ajax({
+                url: url,
+                success: function (response) {
+                    $('#subpage-container').html(response);
+
+                }
+            });
+        }
+        function load_pd_view(url, israt) {
+            $(document).ajaxComplete(function () {
+
+            })
+        
+            $.ajax({
+                url: url,
+                success: function (response) {
+                    $('#subpage-container').html(response);
+                    HideLoader();
+                    if (israt == "Rated") {
+
+                        $('#pills-retail').css("display", "none");
+                        $('#pills-home-tab').hide();
+                        $('#pills-home-tab').removeClass("active");
+                        $('#pills-retail').removeClass("show");
+                        $('#pills-retail').removeClass("active");
+
+                        $('#pills-profile-tab').trigger('click');
+
+
+                        HideLoader();
+                    }
+                    else if (israt == "nonRated") {
+                        $('#pills-profile-tab').css("display", "none");
+                        $('#pills-corporate').css("display", "none");
+                        HideLoader();
+                        
+                    }
+                    HideLoader();
+                }
+            });
+        }
+        function loadECLStep(obj) {
+            var reqUrl = '/Home/Index';
+            var postData = { ECLStep: $(obj).attr("id") };
+            ShowLoader();
+            $.ajax({
+                url: reqUrl,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                async: true,
+                data: JSON.stringify(postData),
+                dataType: 'html',
+                success: function (data) {
+                    $('#subpage-container').html(data);
+                    HideLoader();
+                    if ($(obj).attr("id") == "ECL") {
+                        loadECLDashboard();
+                    }
+                },
+                error: function (error) {
+                    HideLoader();
+                }
+            });
+        }
+    </script>
+</div>
+<script type="text/javascript">
+    function ShowLoader(el) {
+        if (el != null) {
+            $(el).block({
+                message: '<p style="height:20px;"><img src="/Content/Images/loader.gif" style="padding-right: 5px;"/>Loading...</p>',
+                css: {
+                    padding: 5,
+                    margin: 0,
+                    width: '30%',
+                    top: '40%',
+                    left: '35%',
+                    border: '1px solid #7AC043',
+                    backgroundColor: "none"
+                }
+            });
+        }
+        else {
+            $.blockUI({
+                //  message: '<p style="height:20px;"><img src="/Content/Images/loader.gif" style="padding-right: 5px;"/>Loading...</p>',
+                message: '<div class="blockui-spinner"><div class="dot1"></div> <div class="dot2"></div></div>',
+                css: {
+                    margin: 0,
+                    width: '30%',
+                    top: '40%',
+                    left: '35%',
+                    color: "#FFF",
+                    border: 0,
+                    backgroundColor: "none"
+                },
+                overlayCSS: {
+                    backgroundColor: '#eee',
+                    opacity: 0.6,
+                    cursor: 'none'
+                },
+            });
+        }
+    }
+
+    function HideLoader(el) {
+        if (el != null) {
+            $(el).unblock();
+        }
+        else $.unblockUI();
+    }
+
+    $(document).ajaxError(function (xhr, props) {
+        if (props.status === 401) {
+            window.location.href = '/';
+        }
+    });
+</script>
+
+

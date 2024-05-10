@@ -1,0 +1,238 @@
+﻿@model LMS.Models.proforma_advances
+@{
+    ViewBag.Title = "Advances Breakup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container">
+    <h2 class="text-center">Reports</h2>
+    <h6 class="text-center h6">Advances Breakup</h6>
+    <table class="table" id="performa">
+        <thead>
+            <!--<tr>
+
+                <th colspan="9" class="text-center">Advances Breakup</th>-->
+            @*<th></th>*@
+            @*<th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>*@
+            <!--</tr>-->
+            <tr>
+                <th></th>
+                <th>Stage 1</th>
+                <th>Stage 2</th>
+                <th>Stage 3</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td></td>
+                <td colspan="3">--------------------------------------------------------------------------------(Rupees in '000)--------------------------------------------------------------------------------</td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr class="bg-info">
+                <td class=" ">Performing</td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td>Rated   </td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>High Grade   </td>
+                <td>@Model.stage_1_rated_high.ToString("#,##0.00")</td>
+                <td>@Model.stage_2_rated_high.ToString("#,##0.00")</td>
+                <td>@Model.stage_3_rated_high.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.total_high_rated.ToString("#,##0.00") </td>
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>Medium Grade   </td>
+                <td>@Model.stage_1_rated_Mudium.ToString("#,##0.00")</td>
+                <td>@Model.stage_2_rated_Mudium.ToString("#,##0.00")</td>
+                <td>@Model.stage_3_rated_Mudium.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.total_Medium_rated.ToString("#,##0.00") </td>
+
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>Low Grade   </td>
+                <td>@Model.stage_1_rated_low.ToString("#,##0.00")</td>
+                <td>@Model.stage_2_rated_low.ToString("#,##0.00")</td>
+                <td>@Model.stage_3_rated_low.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.total_low_rated.ToString("#,##0.00") </td>
+
+
+            </tr>
+            <tr>
+                <td>Non Rated   </td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>High Grade   </td>
+                <td>@Model.stage_1_non_rated_high.ToString("#,##0.00")</td>
+                <td>@Model.stage_2_non_rated_high.ToString("#,##0.00")</td>
+                <td>@Model.stage_3_non_rated_high.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.total_high_non_rated.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>Medium Grade   </td>
+                <td>@Model.stage_1_non_rated_medium.ToString("#,##0.00")</td>
+                <td>@Model.stage_2_non_rated_medium.ToString("#,##0.00")</td>
+                <td>@Model.stage_3_non_rated_medium.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.total_Medium_non_rated.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>Low Grade   </td>
+                <td>@Model.stage_1_non_rated_low.ToString("#,##0.00")</td>
+                <td>@Model.stage_2_non_rated_low.ToString("#,##0.00")</td>
+                <td>@Model.stage_3_non_rated_low.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.total_low_non_rated.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr class="bg-info">
+                <td>Non-Performing</td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr class="text-danger" style="background-color:#C9E7F2">
+                <td>OAEM   </td>
+                <td>@Model.oaem_stage_1.ToString("#,##0.00")</td>
+                <td>@Model.oaem_stage_2.ToString("#,##0.00")</td>
+                <td>@Model.oaem_stage_3.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.oaem_total.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr class="text-danger" style="background-color:#C9E7F2">
+                <td>Substandard   </td>
+                <td>@Model.substandard_stage_1.ToString("#,##0.00")</td>
+                <td>@Model.substandard_stage_2.ToString("#,##0.00")</td>
+                <td>@Model.substandard_stage_3.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.substandard_total.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr class="text-danger" style="background-color:#C9E7F2">
+                <td>Doubtful   </td>
+                <td>@Model.doubtdul_stage_1.ToString("#,##0.00")</td>
+                <td>@Model.doubtdul_stage_2.ToString("#,##0.00")</td>
+                <td>@Model.doubtdul_stage_3.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.doubtful_total.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr class="text-danger" style="background-color:#C9E7F2">
+                <td>Loss   </td>
+                <td>@Model.loss_stage_1.ToString("#,##0.00")</td>
+                <td>@Model.loss_stage_2.ToString("#,##0.00")</td>
+                <td>@Model.loss_stage_3.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.loss_total.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr>
+                <td>   </td>
+                <td><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.stage_1_total.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+                <td><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.stage_2_total.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+                <td><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.stage_3_total.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+                <td colspan="3"><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.total_d_i.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr class="bg-info">
+                <td>ECL - Breakup</td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>Performing   </td>
+                <td>@Model.ecl_performing_stage_1.ToString("#,##0.00")</td>
+                <td>@Model.ecl_performing_stage_2.ToString("#,##0.00")</td>
+                <td>@Model.ecl_performing_stage_3.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.ecl_performing_total.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr style="background-color:#C9E7F2">
+                <td>Non Performing   </td>
+                <td>@Model.ecl_non_performing_stage_1.ToString("#,##0.00")</td>
+                <td>@Model.ecl_non_performing_stage_2.ToString("#,##0.00")</td>
+                <td>@Model.ecl_non_performing_stage_3.ToString("#,##0.00")</td>
+                <td colspan="3">@Model.ecl_non_performing_total.ToString("#,##0.00")</td>
+
+            </tr>
+            <tr>
+                <td>   </td>
+                <td><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.ecl_stage_1.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+                <td><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.ecl_stage_2.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+                <td><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.ecl_stage_3.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+                <td colspan="3"><hr style="height:0.5px;background-color:black; width:100%" /><span>@Model.total_ecl.ToString("#,##0.00")</span><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin:0" /><hr style="height:0.5px;background-color:black; width:100%;padding:0;margin-top:0.5px" /></td>
+
+            </tr>
+            @*<tr>
+                    <th>
+
+                    </th>
+                </tr>*@
+        </tbody>
+
+    </table>
+
+</section>
+<script>
+    $(document).on('ready', function () {
+        $("#performa").DataTable({
+            dom: 'Bfrtip',
+            "ordering": false,
+            "pageLength": 50,
+            buttons: [
+                { extend: 'copyHtml5', footer: true },
+                { extend: 'excelHtml5', footer: true },
+                { extend: 'csvHtml5', footer: true },
+                { extend: 'pdfHtml5', footer: true }
+            ],
+            "order": [[0, "asc"]],
+            footer: true,
+        });
+    })
+</script>
+
+

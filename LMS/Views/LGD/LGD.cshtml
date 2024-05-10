@@ -1,0 +1,1130 @@
+﻿<div id="subpage-container">
+
+    <div id="lgdOutputDivContainer" style="display:none">
+
+    </div>
+    <div id="lgdECLContainer" style="display:none">
+        <div class="modal fade" id="errModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        The total sum of best,base and worst must be equal to 100
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 p-3 form-inline float-md-right">
+                    <input type="number" max="100" min="0" class="form-control  col-3" placeholder="Base ECL %" id="base" />
+                    <input type="number" max="100" min="0" class="form-control ml-2 col-3" placeholder="Best ECL %" id="best" />
+                    <input type="number" max="100" min="0" class="form-control ml-2 col-3" placeholder="Worst ECL %" id="worst" />
+                    <input type="button" class="btn btn-sm btn-primary ml-2 col-2" value="Check" id="btnPercent" />
+
+
+                </div>
+            </div>
+            <a style="float:right" target="_blank" class="btn btn-primary btn-sm" href="~/Home/Search">Search By Facility ID</a>
+            <table class="table table-bordered" id="front-table-data">
+                <thead>
+                    <tr>
+                        <th>Stages</th>
+                        <th>EAD</th>
+                        <th>IFRS9 Base ECL</th>
+                        <th>IFRS9 Best ECL</th>
+                        <th>IFRS9 Worst ECL</th>
+                        <th>Weighted Average ECL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr class="font-weight-bold">
+                        <td>Total</td>
+                        <td id="ead"></td>
+                        <td id="baseEad"></td>
+                        <td id="bestEad"></td>
+                        <td id="WorstEad"></td>
+                        <td id="WeightedECL"></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div id="data-second" class="col-md-12 " style="display:none; ">
+                <div class="col-md-12">
+                    <div class="form-group">
+
+                        <div class="input-group mb-3">
+                            <select class="custom-select col-3" name="prtdropdown" onchange="portolioChange(value)" id="portfolioDropdown">
+                                <option selected>Choose...</option>
+                            </select>
+                            <div class="input-group-append">
+                                <label class="input-group-text" for="portfolioDropdown">GET</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered" id="front-table-portfolio">
+                    <thead>
+                        <tr>
+                            <th id="prtfl">Stages</th>
+                            <th>Principle + Markup</th>
+                            <th>Percentage</th>
+                            <th>EAD</th>
+                            <th>WAV ECL</th>
+                            <th>Percentage OF ECL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot class="">
+                        <tr class="font-weight-bold">
+                            <td>Total </td>
+                            <td id="totalDrawn"> </td>
+                            <td></td>
+                            <td id="totalEAD"></td>
+                            <td id="totalECL"> </td>
+                            <td id="totalECLPercent">  </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+            <div class="col-md-12">
+                <h2 class="text-center">Reports</h2>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <select class="custom-select col-3" name="Interimdropdown" id="InterimDropdown">
+                                <option selected>All</option>
+                            </select>
+                            <div class="input-group-append" id="InterimClick">
+                                <label class="input-group-text"  for="InterimDropdown">GET</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       
+          
+            <div class="row" id="gdControlBlock">
+                <div class="col text-center">
+                    <button class="btn btn-primary validate" type="button" id="btnECLCalculator">Comprehensive ECL Report</button>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-3 text-center">
+                            <a class="btn btn-primary validate" target="_blank" type="button" href=" @Url.Action( "Index", "Report")">Advances Breakup</a>
+                        </div>
+                        <div class="col-3 text-center">
+                            <a class="btn btn-primary validate" target="_blank" href=" @Url.Action( "Investment", "Report")" type="button" id="">Investment Breakup</a>
+                        </div>
+                        <div class="col-3 text-center">
+                            <a class="btn btn-primary validate" target="_blank" href=" @Url.Action( "Acceptances", "Report")" type="button" id="">Acceptance Breakup</a>
+                        </div>
+                        <div class="col-3 text-center">
+                            <a class="btn btn-primary validate" target="_blank" href=" @Url.Action( "Non_funded", "Report")" type="button" id="">Non Funded Breakup</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script type="text/javascript">
+            // Interim Report
+            $('#InterimClick').click(function () {
+                var stt = document.getElementById('InterimDropdown').value;
+                window.location.href = '/Home/DownloadReview?st='+ stt;
+            })
+            // Ecl Dashoboard
+            $('#btnECLCalculator').click(function () {
+                if ($('#Portfolio_Retail_PD').is(':checked')) {
+                    load_lgd_view("/PD");
+                } else if ($('#Portfolio_Corporate_PD').is(':checked')) {
+                    load_lgd_view("/PD/PD_Corporate");
+                }
+                else {
+                    window.location.href = '/Home/ExportDataTableToExcel';
+                }
+            })
+            portIFRSbase = []
+            var portIFRSbest = []
+            var portIFRSwrost = []
+            var totaldrawn = 0;
+            var bse = 60;
+            var bst = 5;
+            var wrs = 35;
+            var drawn = [];
+            var best = [];
+            var base = [];
+            var worst = [];
+            // Weightages 
+            $("#btnPercent").on('click', function () {
+                var total_wav = 0;
+                var total_wav2 = 0;
+                for (var i = 0; i < worst.length; i++) {
+                    bse = $('#base').val();
+                    bst = $('#best').val();
+                    wrs = $('#worst').val();
+                    var t = parseInt(bse) + parseInt(bst) + parseInt(wrs);
+                    if (t != 100) {
+                        $("#errModal").modal('show');
+                        return;
+                    }
+                    total_wav = total_wav + ((best[i] * (bst / 100)) + (base[i] * (bse / 100)) + (worst[i] * (wrs / 100)))
+                    var val = numberWithCommas(((best[i] * (bst / 100)) + (base[i] * (bse / 100)) + (worst[i] * (wrs / 100))).toFixed(2));
+                    if (i == 0) {
+                        $('#wr0').html(val);
+                    } else if (i == 1) {
+                        $('#wr1').html(val);
+                    } else if (i == 2) {
+                        $('#wr2').html(val);
+                    }
+                    else if (i == 3) {
+                        $('#wr3').html(val);
+                    }
+                }
+                for (var i = 0; i < portIFRSbest.length; i++) {
+                    total_wav2 = total_wav2 + ((portIFRSbest[i] * (bst / 100)) + (portIFRSbase[i] * (bse / 100)) + (portIFRSwrost[i] * (wrs / 100)));
+
+                    var val2 = numberWithCommas(((portIFRSbest[i] * (bst / 100)) + (portIFRSbase[i] * (bse / 100)) + (portIFRSwrost[i] * (wrs / 100))).toFixed(2));
+                    var dran = drawn[i];
+                    var val3 = (((portIFRSbest[i] * (bst / 100)) + (portIFRSbase[i] * (bse / 100)) + (portIFRSwrost[i] * (wrs / 100))) / dran * 100).toFixed(2);
+                    if (i == 0) {
+                        $('#port0').html(val2);
+                        $('#perc0').html(val3 + "%");
+                    } else if (i == 1) {
+                        $('#port1').html(val2);
+                        $('#perc1').html(val3 + "%");
+                    } else if (i == 2) {
+                        $('#port2').html(val2);
+                        $('#perc2').html(val3 + "%");
+                    }
+                    else if (i == 3) {
+                        $('#port3').html(val2);
+                        $('#perc4').html(val3 + "%");
+                    }
+                }
+                $('#totalECL').html(numberWithCommas(total_wav2.toFixed(2)));
+                $('#WeightedECL').html(numberWithCommas(total_wav.toFixed(2)));
+                $('#totalECLPercent').html(((total_wav2 / totaldrawn) * 100).toFixed(2) + '%');
+                
+            })
+            // Portfolio Change Report
+            function portolioChange(value) {
+                console.log(value);
+                var trsec = "";
+                totaldrawn = 0;
+                var totalEAD = 0;
+
+                portIFRSbase = []
+                portIFRSbest = []
+                portIFRSwrost = []
+                var totalWAV = 0
+                drawn = [];
+                var EAD = [];
+                var ECL = []
+                var stage = []
+                $.ajax({
+                    url: '/Home/portdata',
+                    type: 'post',
+                    dataType: "json",
+                    data: { val: value },
+                    success: function (res) {
+                        $(res.result_two).each(function (i, e) {
+                            $('#prtfl').html(e.Portfolio)
+                            totaldrawn += e.startingExp;
+                            totalEAD += e.EAD;
+                            totalWAV += ((e.IFRSNumberBase * bse / 100) + (e.IFRSNumberBest * bst / 100) + (e.IFRSNumberWorst * wrs / 100))
+                            drawn.push(e.startingExp);
+                            EAD.push(e.EAD);
+                            ECL.push((e.IFRSNumberBase * 0.6) + (e.IFRSNumberBest * 0.05) + (e.IFRSNumberWorst * 0.35));
+                            stage.push(e.Stage)
+                            portIFRSbase.push(e.IFRSNumberBase)
+                            portIFRSbest.push(e.IFRSNumberBest)
+                            portIFRSwrost.push(e.IFRSNumberWorst)
+                        });
+                        for (var i = 0; i < stage.length; i++) {
+                            trsec += "<tr>";
+                            trsec += "<td>Stage " + stage[i] + "</td>";
+                            trsec += "<td>" + numberWithCommas(drawn[i].toFixed(2)) + "</td>";
+                            trsec += "<td>" + numberWithCommas(((drawn[i] / totaldrawn) * 100).toFixed(2)) + "% </td>";
+                            trsec += "<td>" + numberWithCommas(EAD[i].toFixed(2)) + "</td>";
+                            trsec += "<td id='port" + i + "'>" + numberWithCommas(ECL[i].toFixed(2)) + "</td>";
+                            trsec += "<td id='perc" + i + "'>" + numberWithCommas(((ECL[i] / drawn[i]) * 100).toFixed(2)) + "%</td>";
+                            $('#totalDrawn').html(numberWithCommas(totaldrawn.toFixed(2)));
+                            $('#totalEAD').html(numberWithCommas(totalEAD.toFixed(2)));
+                            $('#totalECL').html(numberWithCommas(totalWAV.toFixed(2)));
+                            $('#totalECLPercent').html(((totalWAV / totaldrawn) * 100).toFixed(2) + '%');
+                            trsec += "</tr>";
+                        }
+                        $("#front-table-portfolio tbody").html(trsec);
+                        //$("#front-table-portfolio").DataTable({
+                        //    dom: 'Bfrtip',
+                        //    buttons: [
+                        //        'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+                        //    ],
+                        //    "order": [[3, "desc"]]
+                        //});
+                    }
+                })
+            }
+            var best = [];
+            var base = [];
+            var worst = [];
+            function load_pd_view_from_lgd(url, israt) {
+                $(document).ajaxComplete(function () {
+
+                })
+
+                $.ajax({
+                    url: url,
+                    data: { status: israt},
+                    success: function (response) {
+                        $('#subpage-container').html(response);
+                       
+                    }
+                });
+            }
+            $(document).ready(function () {
+            function numberWithCommas(x) {
+                return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+            }
+          
+                $(document).on('click', '#btnLgdStageNext', function () {
+                    ShowLoader();
+                    $.ajax({
+                        url: '/Home/setLGD',
+                        type: "Post",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data.statusCode = 200) {
+                                if (data.isValidFile == "true") {
+                                    var total_EAD = 0;
+                                    var total_Base = 0;
+                                    var total_Best = 0;
+                                    var total_Worst = 0;
+                                    var total_Wav = 0;
+                                    var tr = "";
+                                    $(data.staging_data.Data.result_data).each(function (i, e) {
+                                        tr += "<tr>";
+                                        tr += "<td>Stage " + e.Stage + "</td>";
+                                        base.push(e.IFRSNumberBase);
+                                        best.push(e.IFRSNumberBest);
+                                        worst.push(e.IFRSNumberWorst);
+                                        total_EAD += e.EAD;
+                                        total_Base += e.IFRSNumberBase;
+                                        total_Best += e.IFRSNumberBest;
+                                        total_Worst += e.IFRSNumberWorst;
+                                        total_Wav = total_Wav + ((base[i] * 0.6) + (best[i] * 0.05) + (worst[i] * 0.35));
+                                        tr += "<td>" + numberWithCommas(e.EAD.toFixed(2)) + "</td>";
+                                        tr += "<td>" + numberWithCommas(e.IFRSNumberBase.toFixed(2)) + "</td>";
+                                        tr += "<td>" + numberWithCommas(e.IFRSNumberBest.toFixed(2)) + "</td>";
+                                        tr += "<td>" + numberWithCommas(e.IFRSNumberWorst.toFixed(2)) + "</td>";
+                                        tr += "<td id='wr" + i + "'>" + numberWithCommas(((base[i] * 0.6) + (best[i] * 0.05) + (worst[i] * 0.35)).toFixed(2)) + "</td>";
+                                        tr += "</tr>";
+                                    });
+                                    $('#ead').html(numberWithCommas(total_EAD.toFixed(2)))
+                                    $('#baseEad').html(numberWithCommas(total_Base.toFixed(2)))
+                                    $('#bestEad').html(numberWithCommas(total_Best.toFixed(2)))
+                                    $('#WorstEad').html(numberWithCommas(total_Worst.toFixed(2)))
+                                    $('#WeightedECL').html(numberWithCommas(total_Wav.toFixed(2)))
+                                    var trsec = "";
+                                    totaldrawn = 0;
+                                    var totalEAD = 0;
+                                    var totalWAV = 0;
+                                    drawn = [];
+                                    var EAD = [];
+                                    var ECL = []
+                                    var stage = []
+                                    $(data.staging_data.Data.result_two).each(function (i, e) {
+                                        $('#prtfl').html(e.Portfolio)
+                                        totaldrawn += e.startingExp;
+                                        totalEAD += e.EAD;
+                                        totalWAV += ((e.IFRSNumberBase * 0.6) + (e.IFRSNumberBest * 0.05) + (e.IFRSNumberWorst * 0.35))
+                                        drawn.push(e.startingExp);
+                                        EAD.push(e.EAD);
+                                        ECL.push((e.IFRSNumberBase * 0.6) + (e.IFRSNumberBest * 0.05) + (e.IFRSNumberWorst * 0.35));
+                                        stage.push(e.Stage)
+                                        portIFRSbase.push(e.IFRSNumberBase)
+                                        portIFRSbest.push(e.IFRSNumberBest)
+                                        portIFRSwrost.push(e.IFRSNumberWorst)
+                                    });
+
+                                    $(data.staging_data.Data.result_portfolio).each(function (i, e) {
+                                        $("#portfolioDropdown").append("<option value'" + e + "' >" + e + "</option>")
+                                    })
+                                    $(data.staging_data.Data.result_Interim).each(function (i, e) {
+                                        $("#InterimDropdown").append("<option value'" + e + "' >" + e + "</option>")
+                                    })
+                                    for (var i = 0; i < stage.length; i++) {
+                                        trsec += "<tr>";
+                                        trsec += "<td>Stage " + stage[i] + "</td>";
+                                        trsec += "<td>" + numberWithCommas(drawn[i].toFixed(2)) + "</td>";
+                                        trsec += "<td>" + numberWithCommas(((drawn[i] / totaldrawn) * 100).toFixed(2)) + "% </td>";
+                                        trsec += "<td>" + numberWithCommas(EAD[i].toFixed(2)) + "</td>";
+                                        trsec += "<td id='port" + i + "'>" + numberWithCommas(ECL[i].toFixed(2)) + "</td>";
+                                        trsec += "<td id='perc" + i + "'>" + numberWithCommas(((ECL[i] / drawn[i]) * 100).toFixed(2)) + "%</td>";
+                                        $('#totalDrawn').html(numberWithCommas(totaldrawn));
+                                        $('#totalEAD').html(numberWithCommas(totalEAD.toFixed(2)));
+                                        $('#totalECL').html(numberWithCommas(totalWAV.toFixed(2)));
+                                        $('#totalECLPercent').html(((totalWAV / totaldrawn) * 100).toFixed(2) + '%');
+                                        trsec += "</tr>";
+                                    }
+
+                                    $("#front-table-data tbody").html(tr);
+                                    $("#front-table-portfolio tbody").html(trsec);;
+                                    $("#front-table-portfolio").DataTable({
+                                        dom: 'Bfrtip',
+                                        buttons: [
+                                            { extend: 'copyHtml5', footer: true },
+                                            { extend: 'excelHtml5', footer: true },
+                                            { extend: 'csvHtml5', footer: true },
+                                            { extend: 'pdfHtml5', footer: true }
+                                        ],
+                                        "order": [[0, "asc"]],
+                                    });
+                                    $('#lgdECLContainer').show();
+                                    $('#data-second').show();
+                                    $('#lgdOutputDivContainer').hide();
+                                    var ECLStep = parseInt('6');
+                                    if ($(".bs-wizard-step").hasClass("complete")) { $(".bs-wizard-step").removeClass("complete") }
+                                    if ($(".bs-wizard-step").hasClass("active")) { $(".bs-wizard-step").removeClass("active") }
+
+                                    $(".bs-wizard-step").addClass("de");
+                                    // $("#PD").removeClass("de").addClass("active");
+                                    $('.bs-wizard-step').each(function (i, obj) {
+                                        if ((i + 1) < ECLStep) {
+                                            $(obj).removeClass("de").addClass("complete");
+                                        }
+                                        else if ((i + 1) == ECLStep) {
+                                            $(obj).removeClass("de").addClass("active");
+
+                                        }
+                                    })
+                                }
+                                else {
+                                    if (data.validationStatus == "true" && data.LGDREquired == "false") {
+                                        toastr.warning('File has been uploaded but errors were found during validation. Please check the error log for details.');
+                                        $("#gdValidationBlock").css("display", "block");
+                                        $("#gdValidationBlock .card-title").text(data.errorCount);
+                                        $("#skipModule").css("display", "none");
+                                        $("#gdControlBlock").css("display", "none");
+                                    } else if (data.validationStatus == "true" && data.LGDREquired == "true") {
+                                        load_lgd_view("/LGD");
+                                    }
+                                    else if (data.validationStatus == "true" && data.PDRequired == "true") {
+                                        HideLoader();
+                                        load_pd_view_from_lgd("/PD/IndexBystatus", data.flag);
+                                        if (flag == "Rated") {
+
+                                            $('#pills-retail').css("display", "none");
+                                            $('#pills-home-tab').css("display", "none");
+
+                                        }
+                                        else if (flag == "nonRated") {
+                                            $('#pills-profile-tab').css("display", "none");
+                                        }
+                                    }
+                                    else {
+                                        toastr.warning(data.validationMessage);
+                                    }
+                                }
+                               
+                            }
+                            else {
+                                toastr.error('Error:' + data.status);
+                            }
+                          
+                        },
+                        complete: function () {
+                            HideLoader();
+                        },
+                        error: function () {
+                        }
+
+                    })
+                })
+            });
+        </script>
+        <div id="spage">
+            <div>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" href="#corporate" role="tab" data-toggle="tab">LGD</a> </li>
+                </ul>
+                <div class="tab-content">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-12">
+                                <h5 class="sub-head">Generic Data</h5>
+                                <div class="brd-light row">
+                                    <div class="col-lg-7">
+                                        <p>Upload data</p>
+                                        <a href="/Home/Download?filepath=~/Content/Templates/LGDGeneral/LGD_Retail_General_input.xlsx&amp;&amp;fileName=LGD_Retail_General_input.xlsx" target="_self" class="download" style="top:0; right:140px;"><i class="fa fa-download"></i> Download Template</a>
+                                        <form method="post" enctype="multipart/form-data" action="" id="lgdGeneralFormUpload">
+
+                                            <span class="filename">Select your file</span>
+                                            <label for="file-upload" id="lgdGeneralUploadBtn">
+                                                Browse
+                                            </label>
+                                            <input type="file" class="file-upload" name="fileName" accept=".xlsx" id="lgdGeneralUploadedFile">
+                                            <input id="Type" name="Type" type="hidden" value="General">
+                                            <button class="btn btn-primary upload" type="button" id="btnLgdGeneralUpload">Upload</button>
+                                            <!-- <button class="btn btn-primary download"> <img src="images/download.png"/> Download Template</button>-->
+                                            <table width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="55%">
+                                                            <div class="progress customProgress">
+                                                                <div id="generalFileUploadProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="pull-left" id="genericLgdProgressSpan"><strong>0%</strong> </span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-5" id="lgdGenericValidationBlock" style="display:none;">
+                                        <p>Validation Failed</p>
+                                        <div class="card text-center">
+                                            <div class="card-block">
+                                                <p class="card-text">Error(s) Found</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button id="btnError" class=" btn btn-primary" style="color:white">
+                                                    <img src="/Content/images/file.png">
+                                                    Detailed Error Log
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <h5 class="sub-head">Recovery Data</h5>
+                                <div class="brd-light row">
+                                    <div class="col-lg-7">
+                                        <p>Upload data</p>
+                                        <a href="/Home/Download?filepath=~/Content/Templates/LGDRecovery/LGD_Retail_Recovery_input.xlsx&amp;&amp;fileName=LGD_Retail_Recovery_input.xlsx" target="_self" class="download" style="top:0; right:140px;"><i class="fa fa-download"></i> Download Template</a>
+                                        <form method="post" enctype="multipart/form-data" action="" id="lgdRecoveryFormUpload">
+                                            <span class="filename">Select your file</span>
+                                            <label for="file-upload" id="lgdRecoveryUploadBtn">
+                                                Browse
+                                            </label>
+                                            <input type="file" class="file-upload" name="fileName" accept=".xlsx" id="lgdRecoveryUploadedFile">
+                                            <input id="Type" name="Type" type="hidden" value="Recovery">
+                                            <button class="btn btn-primary upload" type="button" id="btnLgdRecoveryUpload">Upload</button>
+                                            <table width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="55%">
+                                                            <div class="progress customProgress">
+                                                                <div id="recoveryFileUploadProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="pull-left" id="recoveryLgdProgressSpan"><strong>0%</strong> </span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-5" id="lgdRecoveryValidationBlock" style="display:none;">
+                                        <p>Validation Failed</p>
+                                        <div class="card text-center">
+                                            <div class="card-block">
+                                                <p class="card-text">Error(s) Found</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button id="btnError" class=" btn btn-primary" style="color:white">
+                                                    <img src="/Content/images/file.png">
+                                                    Detailed Error Log
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <h5 class="sub-head">Cost Input (Optional)</h5>
+                                <div class="brd-light row">
+                                    <div class="col-lg-7">
+                                        <p>Upload data</p>
+                                        <a href="/Home/Download?filepath=~/Content/Templates/LGDCost/LGD_Retail_Cost_input.xlsx&amp;&amp;fileName=LGD_Retail_Cost_input.xlsx" target="_self" class="download" style="top:0; right:140px;"><i class="fa fa-download"></i> Download Template</a>
+                                        <form method="post" enctype="multipart/form-data" action="" id="lgdCostFormUpload">
+                                            <span class="filename">Select your file</span>
+                                            <label for="file-upload" id="lgdCostUploadBtn">
+                                                Browse
+                                            </label>
+                                            <input type="file" class="file-upload" name="fileName" accept=".xlsx" id="lgdCostUploadedFile">
+                                            <input id="Type" name="Type" type="hidden" value="Cost">
+                                            <button class="btn btn-primary upload" type="button" id="btnLgdCostUpload">
+                                                Upload
+                                            </button>
+                                            <table width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="55%">
+                                                            <div class="progress customProgress">
+                                                                <div id="costFileUploadProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="pull-left" id="costLgdProgressSpan"><strong>0%</strong> </span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-5" id="lgdCostValidationBlock" style="display:none;">
+                                        <p>Validation Failed</p>
+                                        <div class="card text-center">
+                                            <div class="card-block">
+                                                <p class="card-text">Error(s) Found</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button id="btnError" class=" btn btn-primary" style="color:white">
+                                                    <img src="/Content/images/file.png">
+                                                    Detailed Error Log
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" style="display:none;">
+                                <h5 class="sub-head">Security Input (Optional)</h5>
+                                <div class="brd-light row">
+                                    <div class="col-lg-7">
+                                        <a href="/Home/Download?filepath=~/Content/Templates/LGDSecurity/LGD_Retail_Security_input.xlsx&amp;&amp;fileName=LGD_Retail_Security_inputs.xlsx" target="_self" class="download" style="top:0; right:140px;"><i class="fa fa-download"></i> Download Template</a>
+                                        <p>Upload data</p>
+                                        <form method="post" enctype="multipart/form-data" action="" id="lgdSecurityFormUpload">
+                                            <span class="filename">Select your file</span>
+                                            <label for="file-upload" id="lgdSecurityUploadBtn">
+                                                Browse
+                                            </label>
+                                            <input type="file" class="file-upload" name="fileName" accept=".xlsx" id="lgdSecurityUploadedFile">
+                                            <input id="Type" name="Type" type="hidden" value="Security">
+                                            <button class="btn btn-primary upload" type="button" id="btnLgdSecurityUpload">Upload</button>
+                                            <table width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="55%">
+                                                            <div class="progress customProgress">
+                                                                <div id="securityFileUploadProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="pull-left" id="securityLgdProgressSpan"><strong>0%</strong> </span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <p>Validation Failed</p>
+                                        <div class="card text-center">
+                                            <div class="card-block">
+                                                <h4 class="card-title">200</h4>
+                                                <p class="card-text">Error(s) Found</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="/Home/DownloadError?Type=LGDSecurity" target="_self" style="color:white">
+                                                    <img src="/Content/images/file.png">
+
+                                                    Detailed Error Log
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="lgdControlBlock" style="display:none;">
+                                <div class="col text-center ">
+                                    <button class="btn btn-primary validate" id="btnLgdCancel" style="display:none;">Cancel</button>
+                                    <button class="btn btn-primary validate" id="btnLgdSubmit">Submit</button>
+                                    <button class="btn btn-primary validate" id="btnLgdOutput" style="display:none;">Output</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="padding-right:100px">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="width:110%">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">LGD</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-7" style="text-align:right">
+                                            <a href="#" target="_self" class="btn btn-primary">  <img src="~/Content/Images/file.png" height="20" width="20"> Export to excel </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <script type="text/javascript">
+              // LGD File Upload
+                var ECLStep = parseInt('3');
+                var JSisStaging = 'False';
+                $(document).ready(function () {
+                    // top bar position
+                    if ($(".bs-wizard-step").hasClass("complete")) { $(".bs-wizard-step").removeClass("complete") }
+                    if ($(".bs-wizard-step").hasClass("active")) { $(".bs-wizard-step").removeClass("active") }
+
+                    $(".bs-wizard-step").addClass("de");
+                    $('.bs-wizard-step').each(function (i, obj) {
+                        if ((i + 1) < ECLStep) {
+                            $(obj).removeClass("de").addClass("complete");
+                        }
+                        else if ((i + 1) == ECLStep) {
+                            $(obj).removeClass("de").addClass("active");
+                        }
+                    })
+                    $("#lgdGeneralUploadBtn").on("click", function () {
+                        $("#lgdGeneralUploadedFile").trigger("click");
+                    })
+                    $("#lgdRecoveryUploadBtn").on("click", function () {
+                        $("#lgdRecoveryUploadedFile").trigger("click");
+                    })
+                    $("#lgdCostUploadBtn").on("click", function () {
+                        $("#lgdCostUploadedFile").trigger("click");
+                    })
+                    $("#lgdSecurityUploadBtn").on("click", function () {
+                        $("#lgdSecurityUploadedFile").trigger("click");
+                    })
+
+
+                    $("#btnLgdSubmit").click(function () {
+                        var subUrl = '/LGD/CalculateLGD';
+                        ShowLoader();
+                        $.ajax({
+                            url: subUrl,
+                            type: "POST",
+                            success: function (result) {
+                                if (result.status == "true") {
+                                    toastr.success(result.message)
+                                    $("#btnLgdOutput").css("display", "inline-block");
+                                }
+                                else {
+                                    toastr.warning(result.message)
+                                }
+                                HideLoader();
+                            },
+                            error: function (xhr, errorThrown, textStatus) {
+                                toastr.error("Application error occured.");
+                                HideLoader();
+                            }
+                        })
+                    });
+
+                    $("#btnLgdCancel").click(function () {
+                    });
+
+                    function bind_table() {
+                        $(".bs-wizard-step").removeClass("de active").addClass("complete")
+                        $('#gdControlBlock').show()
+                        $('#file-upload-section').hide();
+                        $('#data-section').show();
+                        $.ajax({
+                            url: '/Home/StagingWiseDataBindLGD',
+                            success: function (response) {
+                                var tr = "";
+                                $(response.staging_data.Data.result_data).each(function (i, e) {
+                                    tr += "<tr>";
+                                    tr += "<td>" + e.Stage + "</td>";
+                                    tr += "<td>" + e.LECL_Base + "</td>";
+                                    tr += "<td>" + e.LECL_Base + "</td>";
+                                    tr += "<td>" + e.LECL_Best + "</td>";
+                                    tr += "<td>" + e.LECL_Worst + "</td>";
+                                    tr += "</tr>";
+
+                                });
+                                $("#front-table-data tbody").html(tr);
+                            }
+                        });
+                    }
+                    $(document).on('click','#btnLgdStageBack',function () {
+                        var reqUrl = '/LGD/truncateLGDFile';
+                        $.ajax({
+                            url: reqUrl,
+                            success: function () {
+                                var ECLStep = parseInt('3');
+                                if ($(".bs-wizard-step").hasClass("complete")) { $(".bs-wizard-step").removeClass("complete") }
+                                if ($(".bs-wizard-step").hasClass("active")) { $(".bs-wizard-step").removeClass("active") }
+                                $(".bs-wizard-step").addClass("de");
+                                $('.bs-wizard-step').each(function (i, obj) {
+                                    if ((i + 1) < ECLStep) {
+                                        $(obj).removeClass("de").addClass("complete");
+                                    }
+                                    else if ((i + 1) == ECLStep) {
+                                        $(obj).removeClass("de").addClass("active");
+                                    }
+                                })
+                                $("#lgdGeneralUploadedFile")[0].value = ""
+                                 $("#lgdRecoveryUploadedFile")[0].value = ""
+                                $("#lgdOutputDivContainer").hide();
+                                $('#btnLgdOutput').hide();
+                                $('#lgdControlBlock').css('display','none');
+                                $("#spage").show();
+                            },
+                            error: function () {
+                                toastr.warning("Some Error Occured please try again.");
+                            },
+                        })
+                    })
+                    $("#btnLgdOutput").click(function () {
+                        var reqUrl = '/LGD/ConsolidatedLGD';
+                        $("#lgdOutputDivContainer").html("");
+                        $.ajax({
+                            url: reqUrl,
+                            cache: false,
+                            dataType: "html",
+                            success: function (result) {
+                                $("#lgdOutputDivContainer").html(result);
+                                $("#lgdOutputDivContainer").append(`<button class="btn btn-primary mr-2 validate" id="btnLgdStageNext">Next</button><button class="btn btn-primary validate" id="btnLgdStageBack">Back</button>`);
+                                $("#lgdOutputDivContainer").show();
+                                $("#spage").hide();
+
+                                var ECLStep = parseInt('5');
+                                if ($(".bs-wizard-step").hasClass("complete")) { $(".bs-wizard-step").removeClass("complete") }
+                                if ($(".bs-wizard-step").hasClass("active")) { $(".bs-wizard-step").removeClass("active") }
+
+                                $(".bs-wizard-step").addClass("de");
+                                $('.bs-wizard-step').each(function (i, obj) {
+                                    if ((i + 1) < ECLStep) {
+                                        $(obj).removeClass("de").addClass("complete");
+                                    }
+                                    else if ((i + 1) == ECLStep) {
+                                        $(obj).removeClass("de").addClass("active");
+                                    }
+                                })
+
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.warning("Failed to load output.");
+                            }
+                        });
+                    });
+
+                    Init_LGD_Upload();
+                });
+
+                function Init_LGD_Upload() {
+                    $('#lgdGeneralFormUpload input[name=fileName]').change(function (evt) {
+                        var ctrlObj = $('#lgdGeneralFormUpload .filename')
+                        lgdSingleFileSelected(evt, ctrlObj);
+                    });
+
+                    $('#lgdGeneralFormUpload button[id=btnLgdGeneralUpload]').click(function () {
+                        var obj = $("#lgdGeneralFormUpload");
+                        var progressPrototype = progressLgdGenericHandlingFunction;
+                        var completePrototype = completeLgdGenericHandler;
+                        $("#lgdGenericValidationBlock").css("display", "none");
+                        lgdUploadFile(obj, progressPrototype, completePrototype, '/LGD/LGDUpload');
+                    });
+                    //-------------------------------------------------------------------------------------------------------------------
+                    $('#lgdRecoveryFormUpload input[name=fileName]').change(function (evt) {
+                        var ctrlObj = $('#lgdRecoveryFormUpload .filename')
+                        lgdSingleFileSelected(evt, ctrlObj);
+                    });
+
+                    $('#lgdRecoveryFormUpload button[id=btnLgdRecoveryUpload]').click(function () {
+
+                        var obj = $("#lgdRecoveryFormUpload");
+                        var progressPrototype = progressLgdRecoveryHandlingFunction;
+                        var completePrototype = completeLgdRecoveryHandler;
+                        $("#lgdRecoveryValidationBlock").css("display", "none");
+                        lgdUploadFile(obj, progressPrototype, completePrototype, '/LGD/RecoveryUpload');
+                    });
+                    //-----------------------------------------------------------------------------------------------------------------------------
+                    $('#lgdCostFormUpload input[name=fileName]').change(function (evt) {
+                        var ctrlObj = $('#lgdCostFormUpload .filename')
+                        lgdSingleFileSelected(evt, ctrlObj);
+                    });
+
+                    $('#lgdCostFormUpload button[id=btnLgdCostUpload]').click(function () {
+                        var obj = $("#lgdCostFormUpload");
+                        var progressPrototype = progressLgdCostHandlingFunction;
+                        var completePrototype = completeLgdCostHandler;
+                        $("#lgdCostValidationBlock").css("display", "none");
+                        lgdUploadFile(obj, progressPrototype, completePrototype, '/LGD/CostUpload');
+                    });
+                    //------------------------------------------------------------------------------------------------------------------------------------
+                    $('#lgdSecurityFormUpload input[name=fileName]').change(function (evt) {
+                        var ctrlObj = $('#lgdSecurityFormUpload .filename')
+                        lgdSingleFileSelected(evt, ctrlObj);
+                    });
+
+                    $('#lgdSecurityFormUpload button[id=btnLgdSecurityUpload]').click(function () {
+
+                        var obj = $("#lgdSecurityFormUpload");
+                        var progressPrototype = progressLgdSecurityHandlingFunction;
+                        var completePrototype = completeLgdSecurityHandler;
+                        lgdUploadFile(obj, progressPrototype, completePrototype);
+                    });
+                }
+                //--------------------------------------------------------------------------------------------------------------------------------------------
+                function lgdSingleFileSelected(evt, obj) {
+                    //var selectedFile = evt.target.files can use this  or select input file element and access it's files object
+                    var fileObj = $(evt.target)
+                    var selectedFile = ($(fileObj))[0].files[0];//FileControl.files[0];
+                    if (selectedFile) {
+                        var FileSize = 0;
+                        // var imageType = /image.*/;
+                        if (selectedFile.size > 1048576) {
+                            FileSize = Math.round(selectedFile.size * 100 / 1048576) / 100 + " MB";
+                        }
+                        else if (selectedFile.size > 1024) {
+                            FileSize = Math.round(selectedFile.size * 100 / 1024) / 100 + " KB";
+                        }
+                        else {
+                            FileSize = selectedFile.size + " Bytes";
+                        }
+
+                        $(obj).text("Name : " + selectedFile.name + " (" + FileSize + ")");
+                    }
+                }
+
+                function lgdUploadFile(obj, progressPrototype, completePrototype, url = '') {
+                    ShowLoader();
+                    var reqUrl = url;
+                    var form = $(obj)[0];
+                    var dataString = new FormData(form);
+                    var progressHandlingFunction = progressPrototype;
+                    var completeHandlingFunction = completePrototype;
+                    $.ajax({
+                        url: reqUrl,  //Server script to process data
+                        type: 'POST',
+                        xhr: function () {  // Custom XMLHttpRequest
+                            var myXhr = $.ajaxSettings.xhr();
+                            if (myXhr.upload) { // Check if upload property exists
+                                //myXhr.upload.onprogress = progressHandlingFunction
+                                myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
+                            }
+                            return myXhr;
+                        },
+                        //Ajax events
+                        success: successLgdHandler,
+                        error: errorLgdHandler,
+                        complete: completeHandlingFunction,
+                        // Form data
+                        data: dataString,
+                        //Options to tell jQuery not to process data or worry about content-type.
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    });
+
+                }
+                //-------------------------------------------------------------------------------------------------------------------------------------------------------
+                function progressLgdGenericHandlingFunction(e) {
+
+                    if (e.lengthComputable) {
+                        var percentComplete = Math.round(e.loaded * 100 / e.total);
+                        $("#generalFileUploadProgress").css("width", percentComplete + '%').attr('aria-valuenow', percentComplete);
+                        $('#genericLgdProgressSpan').text(percentComplete + "%");
+                    }
+                    else {
+                        $('#genericLgdProgressSpan').text('unable to compute');
+                    }
+                }
+
+                function completeLgdGenericHandler() {
+                   
+                    $("#generalFileUploadProgress").css("width", '0%').attr('aria-valuenow', '0');
+                    $('#genericLgdProgressSpan').text("0%");
+                }
+                //------------------------------------------------------------------------------------------------------
+                function progressLgdRecoveryHandlingFunction(e) {
+                    
+                    if (e.lengthComputable) {
+                        var percentComplete = Math.round(e.loaded * 100 / e.total);
+                        $("#recoveryFileUploadProgress").css("width", percentComplete + '%').attr('aria-valuenow', percentComplete);
+                        $('#recoveryLgdProgressSpan').text(percentComplete + "%");
+                    }
+                    else {
+                        $('#recoveryLgdProgressSpan').text('unable to compute');
+                    }
+                }
+                $(document).on('click','#btnError',function () {
+
+                    window.location.href = '/LGD/ExportErrors';
+
+                })
+                function completeLgdRecoveryHandler() {
+                   
+                    $("#recoveryFileUploadProgress").css("width", '0%').attr('aria-valuenow', '0');
+                    $('#recoveryLgdProgressSpan').text("0%");
+                }
+                //--------------------------------------------------------------------------------------------------------------------------------------------
+                function progressLgdCostHandlingFunction(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = Math.round(e.loaded * 100 / e.total);
+                        $("#costFileUploadProgress").css("width", percentComplete + '%').attr('aria-valuenow', percentComplete);
+                        $('#costLgdProgressSpan').text(percentComplete + "%");
+                    }
+                    else {
+                        $('#costLgdProgressSpan').text('unable to compute');
+                    }
+                }
+
+                function completeLgdCostHandler() {
+                    $("#costFileUploadProgress").css("width", '0%').attr('aria-valuenow', '0');
+                    $('#costLgdProgressSpan').text("0%");
+                }
+                //-----------------------------------------------------------------------------------------------------------------------------------------------
+                function progressLgdSecurityHandlingFunction(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = Math.round(e.loaded * 100 / e.total);
+                        $("#securityFileUploadProgress").css("width", percentComplete + '%').attr('aria-valuenow', percentComplete);
+                        $('#securityLgdProgressSpan').text(percentComplete + "%");
+                    }
+                    else {
+                        $('#securityLgdProgressSpan').text('unable to compute');
+                    }
+                }
+
+                function completeLgdSecurityHandler() {
+                    $("#securityFileUploadProgress").css("width", '0%').attr('aria-valuenow', '0');
+                    $('#securityLgdProgressSpan').text("0%");
+                }
+                //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+                function successLgdHandler(data) {
+                    HideLoader();
+                    if (data.statusCode == 200) {
+
+                        if (data.type == "General") {
+                            $('#lgdGeneralFormUpload .filename').val(data.file);
+                            if (data.isValidFile == "true") {
+                                toastr.success('File has been uploaded and validation successfully completed.');
+                                $("#lgdGenericValidationBlock").css("display", "none");
+                                if ($("#lgdGenericValidationBlock").is(":hidden") &&
+                                    $("#lgdRecoveryValidationBlock").is(":hidden") &&
+                                    $("#lgdGeneralUploadedFile")[0].value != ""
+                                    && $("#lgdRecoveryUploadedFile")[0].value != ""
+                                    && $("#lgdCostValidationBlock").is(":hidden")) {
+                                    $("#lgdControlBlock").css("display", "block");
+                                }
+                            }
+                            else {
+                                if (data.validationStatus == "true") {
+                                    toastr.warning('File has been uploaded but errors were found during validation. Please check the error log for details.');
+                                    $("#lgdGenericValidationBlock").css("display", "block");
+                                    $("#lgdGenericValidationBlock .card-title").text(data.errorCount);
+                                    $("#lgdControlBlock").css("display", "none");
+
+                                }
+                                else {
+                                    toastr.warning(data.validationMessage);
+                                }
+                            }
+                        }
+                        else if (data.type == "Recovery") {
+                            //$("#lgdRecoveryUploadedFile").val(data.file);
+                            $('#lgdRecoveryFormUpload .filename').val(data.file);
+                            if (data.isValidFile == "true") {
+                                toastr.success('File has been uploaded and validation successfully completed.');
+                                // $("#lgdControlBlock").css("display", "block");
+                                $("#lgdRecoveryValidationBlock").css("display", "none");
+                                if ($("#lgdGenericValidationBlock").is(":hidden") &&
+                                    $("#lgdRecoveryValidationBlock").is(":hidden") &&
+                                    $("#lgdGeneralUploadedFile")[0].value != ""
+                                    && $("#lgdRecoveryUploadedFile")[0].value != ""
+                                    && $("#lgdCostValidationBlock").is(":hidden")) {
+                                    $("#lgdControlBlock").css("display", "block");
+                                }
+                            }
+                            else {
+                                if (data.validationStatus == "true") {
+                                    toastr.warning('File has been uploaded but errors were found during validation. Please check the error log for details.');
+                                    $("#lgdRecoveryValidationBlock").css("display", "block");
+                                    $("#lgdRecoveryValidationBlock .card-title").text(data.errorCount);
+                                    $("#lgdControlBlock").css("display", "none");
+                                }
+                                else {
+                                    toastr.warning(data.validationMessage);
+                                }
+                            }
+                        }
+                        else if (data.type == "Cost") {
+                            //$("#lgdCostUploadedFile").val(data.file);
+                            $('#lgdCostFormUpload .filename').val(data.file);
+                            if (data.isValidFile == "true") {
+                                toastr.success('File has been uploaded and validation successfully completed.');
+                                // $("#lgdControlBlock").css("display", "block");
+                                $("#lgdCostValidationBlock").css("display", "none");
+                                if ($("#lgdGenericValidationBlock").is(":hidden") &&
+                                    $("#lgdRecoveryValidationBlock").is(":hidden") &&
+                                    $("#lgdGeneralUploadedFile")[0].value != ""
+                                    && $("#lgdRecoveryUploadedFile")[0].value != ""
+                                    && $("#lgdCostValidationBlock").is(":hidden")) {
+                                    $("#lgdControlBlock").css("display", "block");
+                                }
+                            }
+                            else {
+
+                                if (data.validationStatus == "true") {
+                                    toastr.warning('File has been uploaded but errors were found during validation. Please check the error log for details.');
+                                    $("#lgdCostValidationBlock").css("display", "block");
+                                    $("#lgdCostValidationBlock .card-title").text(data.errorCount);
+                                    $("#lgdControlBlock").css("display", "none");
+
+                                }
+                                else {
+                                    toastr.warning(data.validationMessage);
+
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        toastr.error('Error:' + data.status);
+                    }
+                }
+
+                function errorLgdHandler(xhr, ajaxOptions, thrownError) {
+                    HideLoader();
+                    toastr.error('There was an error attempting to upload the file. Please try again later.' + '(' + thrownError + ')')
+                }
+
+            </script>
+        </div>
+
+
+
+    </div>

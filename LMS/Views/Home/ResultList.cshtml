@@ -1,0 +1,145 @@
+﻿@using System.Data
+@using System.Globalization
+@model IEnumerable<LMS.Models.OutPut>
+
+@{
+    ViewBag.Title = "ResultList";
+}
+<style>
+    th, td {
+        border: 1px solid black;
+        padding: 6px !important;
+    }
+
+    .full-text-width-th {
+        padding: 0px 16px !important;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+
+<table cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <th class="full-text-width-th">Repayment Dates</th>
+            <th>Days Between</th>
+            <th>Pay Indicator</th>
+            <th>Repayment Amount</th>
+            <th>Days toDiscount</th>
+            <th>PD Cumulative Base</th>
+            <th>PD Cumulative Best</th>
+            <th>PD Cumulative Worst</th>
+            <th>PD Marginal Base</th>
+            <th>PD Marginal Best</th>
+            <th>PD Marginal Worst</th>
+            <th>Discount Factor</th>
+            <th class="full-text-width-th">LGD</th>
+            <th>EAD Start</th>
+            <th>Interest_Paid</th>
+            <th>EAD</th>
+            <th>Expected Loss Base</th>
+            <th>Expected Loss Best</th>
+            <th>Expected Loss Worst</th>
+            <th>Cumulative Expected Loss Base</th>
+            <th>Cumulative Expected Loss Best</th>
+            <th>Cumulative Expected Loss Worst</th>
+            <th>Selector</th>
+            <th>Base ECL-12M</th>
+            <th>Best ECL-12M</th>
+            <th>Worst ECL-12M</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (String.IsNullOrEmpty(ViewBag.Message))
+        {
+            foreach (var item in Model)
+            {
+        <tr>
+            @{
+                NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+                nfi.NumberDecimalDigits = 4;
+            }
+            <td>@item.Repayment_Dates.ToString("dd MMM yyyy")</td>
+            <td>@item.Days_Between</td>
+            <td>@item.Pay_Indicator</td>
+            <td>@item.Repayment_Amount</td>
+            <td>@item.DaysToDiscount</td>
+            <td>@item.PD_Cumulative</td>
+            <td>@item.PD_Cumulative_best</td>
+            <td>@item.PD_Cumulative_worst</td>
+            <td>@item.PD_Marginal</td>
+            <td>@item.PD_Marginal_best</td>
+            <td>@item.PD_Marginal_worst</td>
+            <td>@item.Discount_Factor</td>
+            <td>@item.LGD</td>
+            <td>@item.EAD_Start</td>
+            <td>@item.Interest_Paid</td>
+            <td>@item.EAD</td>
+            <td>@item.Expected_Loss</td>
+            <td>@item.Expected_Loss_best</td>
+            <td>@item.Expected_Loss_worst</td>
+            <td>@item.Cumulative_Expected_Loss</td>
+            <td>@item.Cumulative_Expected_Loss_best</td>
+            <td>@item.Cumulative_Expected_Loss_worst</td>
+            <td>@item.Selector</td>
+            <td>@item.ECL_12M</td>
+            <td>@item.Best_ECL_12M</td>
+            <td>@item.worst_ECL_12M</td>
+            @*<td>@item.Repayment_Dates.ToString("dd MMM yyyy")</td>
+            <td>@item.Days_Between</td>
+            <td>@item.Pay_Indicator</td>
+            <td>@item.Repayment_Amount</td>
+            <td>@item.DaysToDiscount</td>
+            <td>@item.PD_Cumulative.ToString("P", nfi)</td>
+            <td>@item.PD_Cumulative_best.ToString("P", nfi)</td>
+            <td>@item.PD_Cumulative_worst.ToString("P", nfi)</td>
+            <td>@item.PD_Marginal.ToString("P", nfi)</td>
+            <td>@item.PD_Marginal_best.ToString("P", nfi)</td>
+            <td>@item.PD_Marginal_worst.ToString("P", nfi)</td>
+            <td>@item.Discount_Factor.ToString("P", nfi)</td>
+            <td>@item.LGD.ToString("P", nfi)</td>
+            <td>@item.EAD_Start</td>
+            <td>@item.Interest_Paid</td>
+            <td>@item.EAD</td>
+            <td>@item.Expected_Loss</td>
+            <td>@item.Expected_Loss_best</td>
+            <td>@item.Expected_Loss_worst</td>
+            <td>@item.Cumulative_Expected_Loss</td>
+            <td>@item.Cumulative_Expected_Loss_best</td>
+            <td>@item.Cumulative_Expected_Loss_worst</td>
+            <td>@item.Selector</td>
+            <td>@item.ECL_12M</td>
+            <td>@item.Best_ECL_12M</td>
+            <td>@item.worst_ECL_12M</td>*@
+        </tr>
+            }
+        }
+        else
+        {
+
+            <tr><td><h1> @ViewBag.Message </h1></td></tr>
+
+        }
+    </tbody>
+
+</table>
+
+<script>
+    $(document).ready(function () {
+
+        $("table").DataTable({
+          dom: 'Bfrtip',
+           buttons: [
+    'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+  ]
+});
+
+    });
+</script>

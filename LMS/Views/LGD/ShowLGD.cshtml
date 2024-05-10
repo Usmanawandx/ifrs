@@ -1,0 +1,61 @@
+﻿@model IEnumerable<LMS.Models.ConsolidatedLGDCalculated>
+
+<table border="1" class="table table-condensed table-responsive table-bordered">
+
+    <thead>
+        <tr>
+            <th>
+                Segments
+            </th>
+            <th>
+                Count of Accounts
+            </th>
+            <th>
+                Exposure at Default
+            </th>
+            <th>
+                Recoveries
+            </th>
+            <th>
+                Costs
+            </th>
+            <th>
+                Economic Recoveries
+            </th>
+            <th>
+                Economic Costs
+            </th>
+            <th>
+                Recoveries (%)
+            </th>
+            <th>
+                Economic Rec (%)
+            </th>
+            <th>
+                LGD
+            </th>
+            <th>
+                Economic LGD
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Segment</td>
+                <td>@item.CountOfAccount</td>
+                <td>@Math.Round(item.ExposureAtDefault).ToString("#,##0.00")</td>
+                <td>@Math.Round(item.Recoveries).ToString("#,##0.00")</td>
+                <td>@Math.Round(item.Costs).ToString("#,##0.00")</td>
+                <td>@Math.Round(item.EconomicRecoveries).ToString("#,##0.00")</td>
+                <td>@Math.Round(item.EconomicCosts).ToString("#,##0.00")</td>
+                <td>@item.RecoveryPercent.ToString("P2")</td>
+                <td>@item.EconomicRecoveryPercent.ToString("P2")</td>
+                <td>@String.Format("{0:0%}", item.LGD)</td>
+                <td>@String.Format("{0:0%}", item.EconomicLGD)</td>
+            </tr>
+
+        }
+    </tbody>
+</table>
